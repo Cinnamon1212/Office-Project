@@ -51,6 +51,7 @@ char op;
 void calc(){
   while(1){
     char key = keypad.getKey();
+    if (key == goBack){lcd.clear();return;}
     if (key != NO_KEY && (key=='1'||key=='2'||key=='3'||key=='4'||key=='5'||key=='6'||key=='7'||key=='8'||key=='9'||key=='0')){
        if (presentValue != true){
         num1 = num1 + key;
@@ -84,7 +85,7 @@ void calc(){
             break;
         }
       }  
-    }else if(final == true && key != NO_KEY && key == 'D'){
+    }else if(final == true && key != NO_KEY && key == 'C'){
       lcd.clear();
       if (op == 'A'){
         answer = num1.toInt() + num2.toInt();
