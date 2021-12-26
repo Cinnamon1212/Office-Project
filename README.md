@@ -1,5 +1,5 @@
 # Office Project
-|| Just a fun office project
+> Just a fun office project
 
 
 ## Features
