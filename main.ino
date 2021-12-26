@@ -40,9 +40,82 @@ const byte rowPins[ROWS] = {9, 8, 7, 6};
 byte colPins[COLS] = {5, 4, 3, 2}; 
 Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
 
-// Games
+// Calculator
+boolean presentValue = false;
+boolean next = false;
+boolean final = false;
+String num1, num2;
+int answer;
+char op;
 
-void gameOfLife(){
+void calc(){
+  while(1){
+    char key = keypad.getKey();
+    if (key != NO_KEY && (key=='1'||key=='2'||key=='3'||key=='4'||key=='5'||key=='6'||key=='7'||key=='8'||key=='9'||key=='0')){
+       if (presentValue != true){
+        num1 = num1 + key;
+        int numLength = num1.length();
+        lcd.setCursor(15 - numLength, 0); //to adjust one whitespace for operator
+        lcd.print(num1);
+       }else{
+        num2 = num2 + key;
+        int numLength = num2.length();
+        lcd.setCursor(15 - numLength, 1);
+        lcd.print(num2);
+        final = true;
+       }
+    }else if(presentValue == false && key != NO_KEY && (key == '#' || key == '*' || key == 'B' || key == 'A')){
+      if (presentValue == false){
+        presentValue = true;
+        op = key;
+        lcd.setCursor(15,0);
+        switch(op){
+          case 'A':
+            lcd.print('+');
+            break;
+          case 'B':
+            lcd.print('-');
+            break;
+          case '#':
+            lcd.print('/');
+            break;
+          case '*':
+            lcd.print('*');
+            break;
+        }
+      }  
+    }else if(final == true && key != NO_KEY && key == 'D'){
+      lcd.clear();
+      if (op == 'A'){
+        answer = num1.toInt() + num2.toInt();
+      }
+      else if (op == 'B'){
+        answer = num1.toInt() - num2.toInt();
+      }
+      else if (op == '*'){
+        answer = num1.toInt() * num2.toInt();
+      }
+      else if (op == '#'){
+        answer = num1.toInt() / num2.toInt();
+      }
+      unsigned long startTime = millis();
+      while((millis() - startTime) <= 10000){
+        lcd.setCursor(0,0);
+        lcd.print(answer);
+      }
+      presentValue = false;
+      final = false;
+      num1 = "";
+      num2 = "";
+      answer = 0;
+      op = ' ';
+      lcd.clear();
+      return;
+     }
+  }
+}
+// Games
+void jumpGame(){
   while(1){
     char key = keypad.getKey();
     lcd.setCursor(0,0);
@@ -55,6 +128,8 @@ void gameOfLife(){
     }
   }
 }
+
+void rNums(){}
 
 //  Utils
 void fans(){
@@ -90,21 +165,45 @@ void invalidCode(){
   }
 }
 
-void menu2(){}
+void menu2(){
+  lcd.clear();
+  while(1){
+      char key = keypad.getKey();
+      lcd.setCursor(0,0);
+      lcd.print("(3) Calculator");
+      lcd.setCursor(0,1);
+      lcd.print("(4) Random numbers");
+      if (int(key) != 0){
+        switch(key){
+          case '3':
+            lcd.clear();
+            calc();
+            break;
+          case '4':
+            lcd.clear();
+            rNums();
+            break;
+          case 'D':
+            menu1();
+            break;
+        }
+      }
+  }
+}
 
 void menu1(){
   lcd.clear();
   while(1){
       char key = keypad.getKey();
       lcd.setCursor(0,0);
-      lcd.print("(1) Game of life");
+      lcd.print("(1) Jump game");
       lcd.setCursor(0,1);
       lcd.print("(2) Turn on fan");
       if (int(key) != 0){
         switch(key){
           case '1':
             lcd.clear();
-            gameOfLife();
+            jumpGame();
             break;
           case '2':
             lcd.clear();
