@@ -9,7 +9,6 @@
 * LCD display
 * Temperature sensor (In dev)
 * Random number generator
-* Jump game (In dev)
 
 ## Requirements
 * Arduino Software
