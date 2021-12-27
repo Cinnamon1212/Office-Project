@@ -4,12 +4,12 @@
 
 ## Features
 * Passcode protection
-* Simple calculator (In dev)
-* Fan control (In dev)
+* Simple calculator
+* Fan control
 * LCD display
 * Temperature sensor (In dev)
-* Random number generator (In dev)
-* Conway's game of life  (In dev)
+* Random number generator
+* Jump game (In dev)
 
 ## Requirements
 * Arduino Software
